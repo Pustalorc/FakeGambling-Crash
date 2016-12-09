@@ -11,12 +11,16 @@ namespace FakeGambling
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            // Use a function so that restart is simpler
             Run();
         }
         static void Run()
         {
+            // Set forced exit to false, to prevent an infinite restart even when closing the program
             Values.ForcedExit = false;
+            // Run the program
             Application.Run(new Crash());
+            // If player lost, restart the app
             if (Values.ForcedExit == true)
             {
                 Run();
@@ -25,7 +29,10 @@ namespace FakeGambling
     }
     static class Values
     {
+        // Set lost variable
         public static bool ForcedExit = false;
+
+        // Use RNGCryptoService to create a somewhat random number
         private static readonly RNGCryptoServiceProvider _generator = new RNGCryptoServiceProvider();
 
         public static int Between(int minimumValue, int maximumValue)
